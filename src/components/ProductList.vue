@@ -14,12 +14,16 @@
 
 <script>
 import { getProductList, modifyProduct } from '../logic/products.js'
+import EventBus from '../bus'
 
 export default {
     name: 'ProductList',
+    props: ['newProducts'],
     data(){
         return {
-            products: []
+            products: [],
+            id: '',
+            buyed: 0
         }
     },
     methods: {
@@ -27,13 +31,20 @@ export default {
             try{
                 const response = await getProductList()
                 this.products = response
+
             }catch(error){
                 throw new Error('Algo no funcionó')
             } 
         },
         async modifyProductBuyed(id, buyed){
+            this.id = id
+            this.buyed = buyed
             try{
-                await modifyProduct(id, buyed)             
+                await modifyProduct(id, buyed)
+
+                const response = await getProductList()
+                this.products = response
+
             }catch(error){
                 throw new Error('Algo no funcionó')
             }
@@ -42,14 +53,18 @@ export default {
     created(){
         this.retrieveProductList();
     },
-    updated(){
-        this.retrieveProductList();
+    async updated(){
+        EventBus.$on('newProducts', (product) => {
+            this.products = product
+        });
     }
 }
 </script>
 
 <style scoped>
-
+.product-list{
+    padding-top: 5%;
+}
 .product{
     display: flex;
     justify-content: space-evenly;

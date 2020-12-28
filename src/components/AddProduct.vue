@@ -24,14 +24,17 @@
 </template>
 
 <script>
-import { newProduct } from '../logic/products.js'
+import { newProduct, getProductList } from '../logic/products.js'
+import EventBus from '../bus'
+
 export default {
     name:'AddProduct',
     data(){
         return {
             error: false,
             product: '',
-            buyed: 0
+            buyed: 0,
+            newProducts: []
         }
     },
     methods: {
@@ -46,10 +49,13 @@ export default {
             try{    
                 await newProduct(this.product, this.buyed)
                 this.product = ''
+
+                const response = await getProductList()
+                this.newProducts = response
+                EventBus.$emit('newProducts', this.newProducts)
             }catch(error){
                 throw new Error('Failed')
             }
-
         }
     }
 }

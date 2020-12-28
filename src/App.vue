@@ -2,7 +2,7 @@
   <div id="app">
     <Header />
     <div class="main">
-      <ProductList />
+      <ProductList/>
       <AddProduct />
     </div>
   </div>
@@ -43,6 +43,8 @@ ul{
   list-style: none;
   margin: 0;
   padding: 0;
+  overflow: auto;
+  max-height: 60vh;
 }
 
 .main{
@@ -50,6 +52,6 @@ ul{
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  height: 100%;
+  height: 90vh%;
 }
 </style>
