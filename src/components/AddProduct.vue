@@ -44,8 +44,7 @@ export default {
             this.error = false
 
             try{    
-                const response = await newProduct(this.product, this.buyed)
-                console.log(response)
+                await newProduct(this.product, this.buyed)
                 this.product = ''
             }catch(error){
                 throw new Error('Failed')

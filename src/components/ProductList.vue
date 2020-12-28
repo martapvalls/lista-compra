@@ -1,6 +1,5 @@
 <template>
     <div>
-        <p v-if="loading"> cargando </p>
         <ul v-if="products.length > 0" class="product-list">
             <li v-for="product in products" :key="product.id" class="product">
                 <span class="product-title"> {{product.producto}} </span>
@@ -20,38 +19,31 @@ export default {
     name: 'ProductList',
     data(){
         return {
-            products: [],
-            loading: false
+            products: []
         }
     },
     methods: {
         async retrieveProductList(){
-            this.loading = true
             try{
                 const response = await getProductList()
                 this.products = response
-                console.log('hola')
             }catch(error){
-                throw new Error('Fail')
-            } finally {
-                this.loading = false
-            }
+                throw new Error('Algo no funcionó')
+            } 
         },
         async modifyProductBuyed(id, buyed){
             try{
                 await modifyProduct(id, buyed)             
             }catch(error){
-                throw new Error('Failed')
+                throw new Error('Algo no funcionó')
             }
         }
     },
     created(){
         this.retrieveProductList();
     },
-    computed : {
-        newProducts: function (){
-            return 'hola'
-        }
+    updated(){
+        this.retrieveProductList();
     }
 }
 </script>
