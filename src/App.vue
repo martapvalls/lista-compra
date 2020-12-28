@@ -48,7 +48,8 @@ ul{
 .main{
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
 }
 </style>

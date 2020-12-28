@@ -1,45 +1,45 @@
 <template>
-    <ul v-if="products.length > 0" class="product-list">
-        <li v-for="product in products" :key="product.id" class="product">
-            <span class="product-title"> {{product.producto}} </span>
-            <button @click="modifyProductBuyed(product.id, product.comprado)"> 
-                <span v-if="!buyed" class="product-no-buyed">No comprado</span>
-                <span v-if="buyed" class="product-buyed">Comprado</span>
-            </button> 
-        </li>
-    </ul>
+    <div>
+        <p v-if="loading"> cargando </p>
+        <ul v-if="products.length > 0" class="product-list">
+            <li v-for="product in products" :key="product.id" class="product">
+                <span class="product-title"> {{product.producto}} </span>
+                <button @click="modifyProductBuyed(product.id, product.comprado)"> 
+                    <span v-if="product.comprado === 0" class="product-no-buyed">No comprado</span>
+                    <span v-if="product.comprado === 1" class="product-buyed">Comprado</span>
+                </button> 
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script>
 import { getProductList, modifyProduct } from '../logic/products.js'
-//import axios from 'axios'
 
 export default {
     name: 'ProductList',
     data(){
         return {
             products: [],
-            buyed: false
+            loading: false
         }
     },
     methods: {
         async retrieveProductList(){
+            this.loading = true
             try{
                 const response = await getProductList()
-                console.log(response)
                 this.products = response
+                console.log('hola')
             }catch(error){
                 throw new Error('Fail')
+            } finally {
+                this.loading = false
             }
         },
         async modifyProductBuyed(id, buyed){
             try{
-                const response = await modifyProduct(id, buyed)
-                console.log(response)
-                if(response.res === true){
-                    this.buyed = !this.buyed
-                }
-                
+                await modifyProduct(id, buyed)             
             }catch(error){
                 throw new Error('Failed')
             }
@@ -47,14 +47,17 @@ export default {
     },
     created(){
         this.retrieveProductList();
+    },
+    computed : {
+        newProducts: function (){
+            return 'hola'
+        }
     }
 }
 </script>
 
 <style scoped>
-.product-list{
-    padding-top: 4rem;
-}
+
 .product{
     display: flex;
     justify-content: space-evenly;
