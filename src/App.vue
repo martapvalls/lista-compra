@@ -52,6 +52,6 @@ ul{
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  height: 90vh%;
+  height: 90vh;
 }
 </style>
